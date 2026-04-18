@@ -2,8 +2,10 @@
 return {{ "catppuccin/nvim", name = "catppuccin", priority = 1000,
 config = function()
     require("catppuccin").setup({
+            flavour = "macchiato", -- Higher contrast than "mocha"
         integrations = {
             treesitter = true,
+            --transparent = true,
             native_lsp = {
                 enabled = true,
                 virtual_text = {
