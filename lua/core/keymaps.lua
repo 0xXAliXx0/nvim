@@ -10,3 +10,9 @@
             vim.keymap.set('i', '<C-l>','<Right>')
             vim.keymap.set('n', '<leader>t', ':TransparentToggle<CR>')
 
+local function lunch_terminal()
+    local dir = vim.fn.getcwd()
+    vim.fn.jobstart({ "foot", "-D", dir }, { detach = true })
+end
+            vim.keymap.set('n','<leader>q',lunch_terminal)
+
