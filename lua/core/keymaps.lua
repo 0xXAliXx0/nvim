@@ -22,7 +22,7 @@ local function lunch_terminal()
     --:p expands the path to be fully qualified.
     --:h (head) removes the last component (the filename), leaving you with just the directory.
 
-    vim.fn.jobstart({ "foot", "-D", dir }, { detach = true })
+    vim.fn.jobstart({ "foot","-a","nvim_term", "-D", dir }, { detach = true })
 end
             vim.keymap.set('n','<leader>q',lunch_terminal)
 
