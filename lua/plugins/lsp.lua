@@ -136,6 +136,27 @@ return {
                     },
                 },
             },
+
+            before_init = function(params, config)
+                -- List the environment folder names you use (like 'backend' or '.venv')
+                local venv_paths = { 'backend', '.venv', 'venv' }
+
+                for _, path in ipairs(venv_paths) do
+                    -- Look inside your current working directory for the python binary
+                    local local_python = vim.fs.joinpath(vim.fn.getcwd(), path, 'bin', 'python')
+
+                    -- If the binary exists, assign it to Pyright automatically
+                    if vim.fn.executable(local_python) == 1 then
+                        config.settings.python.pythonPath = local_python
+                        return
+                    end
+                end
+
+                -- Fallback: If you activated the environment in your terminal before opening nvim
+                if vim.env.VIRTUAL_ENV then
+                    config.settings.python.pythonPath = vim.fs.joinpath(vim.env.VIRTUAL_ENV, 'bin', 'python')
+                end
+            end,
             on_attach = function(client, bufnr)
                 vim.api.nvim_buf_create_user_command(bufnr, 'LspPyrightOrganizeImports', function()
                     local params = {
