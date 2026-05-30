@@ -2,8 +2,22 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
         { "j-hui/fidget.nvim", opts = {} },
+        { "williamboman/mason.nvim", opts = {} }, -- Installs the Mason UI toolbox
+        { 
+            "williamboman/mason-lspconfig.nvim",
+            opts = {
+                -- The magic list: Mason will auto-download these if they are missing!
+                ensure_installed = {
+                    "lua_ls",
+                    "pyright",
+                    "dockerls",
+                    "docker_compose_language_service",
+                    "html",
+                    "svelte"
+                }
+            }
+        },
     },
-
     config = function()
         -- 1. SETUP GLOBAL CAPABILITIES (Required for HTML autocomplete snippets)
         local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -112,7 +126,7 @@ return {
                 'Pipfile',
                 '.git',
             },
- --           ---@type lspconfig.settings.pyright
+            --           ---@type lspconfig.settings.pyright
             settings = {
                 python = {
                     analysis = {
@@ -205,6 +219,9 @@ return {
                 },
             },
         }
+
+        local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+        vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
 
 
         -- 4. REGISTER AND ENABLE BOTH SERVERS
